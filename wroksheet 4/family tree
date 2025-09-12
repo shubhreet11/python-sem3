@@ -1,0 +1,39 @@
+class Person:
+    def __init__(self, name, birth_year):
+        self.name = name
+        self.birth_year = birth_year
+        self.parents = []
+        self.children = []
+    def add_child(self, child):
+        self.children.append(child)
+        child.parents.append(self)
+
+def display_family_tree(person, level=0):
+    print(" " * (level * 4) + f"{person.name} ({person.birth_year})")
+    for child in person.children:
+        display_family_tree(child, level + 1)
+
+people = {}
+
+n = int(input("Enter number of family members: "))
+for i in range(n):
+    name = input(f"Enter name of member {i+1}: ")
+    year = int(input(f"Enter birth year of {name}: "))
+    people[name] = Person(name, year)
+
+r = int(input("Enter number of parent-child relations: "))
+for i in range(r):
+    parent = input("Enter parent name: ")
+    child = input("Enter child name: ")
+
+    if parent in people and child in people:
+        people[parent].add_child(people[child])
+    else:
+        print("Invalid names entered!")
+
+root = input("Enter root person name to display tree: ")
+if root in people:
+    print("\nFamily Tree:")
+    display_family_tree(people[root])
+else:
+    print("Person not found!")
